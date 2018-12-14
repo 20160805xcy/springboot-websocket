@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcy.springbootwebsocket.mapper.UserWebMapper">
+  <resultMap id="BaseResultMap" type="com.xcy.springbootwebsocket.model.UserWeb">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+
+  <select id="selectUserByPassWord" parameterType="com.xcy.springbootwebsocket.model.UserWeb" resultType="com.xcy.springbootwebsocket.model.UserWeb">
+    select * from user_web where user_name = #{userName} and pass_word = #{passWord}
+  </select>
+
+</mapper>
