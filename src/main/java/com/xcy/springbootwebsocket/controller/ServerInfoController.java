@@ -22,13 +22,13 @@ public class ServerInfoController {
     @Autowired
     private ServerInfoService serverInfoService;
 
-    @Scheduled(fixedRate = 10000) //10s执行一次
+    //@Scheduled(fixedRate = 10000) //10s执行一次
     public void sendServerInfo(){
         ServerInfo info = serverInfoService.getServerInfoToAll();
         System.out.println("在线用户=====>" + info);
     }
 
-    @Scheduled(fixedRate = 3000) //3s执行一次
+    //@Scheduled(fixedRate = 3000) //3s执行一次
     public void sendServerInfoToOne(){
         List userLists = new ArrayList();
         //暂且写死,只给id为1的用户发送,真实场景可以通过规则来指定给谁发.

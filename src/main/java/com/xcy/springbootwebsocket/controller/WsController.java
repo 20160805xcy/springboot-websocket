@@ -6,9 +6,11 @@ import com.xcy.springbootwebsocket.pojo.Response;
 import com.xcy.springbootwebsocket.service.WebSocketService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,12 @@ public class WsController {
      */
     @MessageMapping("/sendToAll")//@MessageMapping和@RequestMapping功能类似，用于设置URL映射地址，浏览器向服务器发起请求，需要通过该地址。
     //@SendTo("/topic/getResponse")//如果服务器接受到了消息，就会对订阅了@SendTo括号中的地址传送消息。
-    public void sendToAll(Message message) {
+    public void sendToAll(Message message, StompHeaderAccessor stompHeaderAccessor) {
+
+        //通过在configureClientInboundChannel 方法里面放入user对象，在controller层能获取到里面的值。
+        Principal user = stompHeaderAccessor.getUser();
+        String name = user.getName();
+        System.out.println("header里面的 name值 ：" + name);
 
         //return new Response("广播消息: " + message.getMessage() + ". 发送者:" + message.getUserName());
         webSocketService.sendMsg(new Response("广播消息: " + message.getMessage() + ". 发送者:" + message.getUserName()));

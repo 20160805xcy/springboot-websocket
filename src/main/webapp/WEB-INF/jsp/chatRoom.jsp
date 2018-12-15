@@ -40,6 +40,10 @@
     //此值由服务端传递给前端,实现方式没有要求
     var userIdSelf = $("#userId").val();
 
+    var headers={
+        userId:userIdSelf
+    };
+
     function setConnected(connected) {
         document.getElementById('connect').disabled = connected;
         document.getElementById('disconnect').disabled = !connected;
@@ -50,9 +54,11 @@
     function connect() {
         var socket = new SockJS('/endpointWisely'); //1连接SockJS的endpoint是“endpointWisely”，与后台代码中注册的endpoint要一样。
         stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
-        stompClient.connect({"aa":"11"}, function(frame) {//3连接webSocket的服务端。
+        stompClient.connect(headers, function(frame) {//3连接webSocket的服务端。
             setConnected(true);
             console.log('开始进行连接Connected: ' + frame);
+
+            stompClient.send()
 
             //4.1通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
             stompClient.subscribe('/topic/getResponse', function(respnose){

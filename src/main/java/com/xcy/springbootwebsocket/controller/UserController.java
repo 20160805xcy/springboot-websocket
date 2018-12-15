@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,10 +23,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    public static HashMap<String, Object> onlineUser = new HashMap<>();
     @RequestMapping(value = "login",method = RequestMethod.GET)
     public String login(UserWeb userWeb, Model model){
         UserWeb user = userService.logIn(userWeb);
         model.addAttribute("user", user);
+
+
+
         List<UserWeb> allUser = userService.getAllUser();
         model.addAttribute("userList", allUser);
         return "chatRoom";
