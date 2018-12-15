@@ -43,3 +43,23 @@ new SockJS("endpointWisely")进行连接.
     
 * 所有用户(在线):URL映射-@MessageMapping("/sendToAll")
     调用SimpMessagingTemplate.convertAndSend("/topic/getResponse", msg);
+
+##通过定时器定时监控服务器JVM内存资源
+###1. pom.xml导包
+首先要知道的是springboot已经内置了定时任务的包
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    
+###2.使用时,要配置两个地方
+* 在controller类的方法上使用注解:@Scheduled(fixedRate = 3000),这个方法必须没有参数
+* 在主类上要添加注解:@EnableScheduling 开启定时任务
+
+###3.定时发送消息(指定用户和所有在线用户)
+其编写代码跟上面的编写一致,调用的都是通过模板:SimpMessagingTemplate来完成.具体细节看代码.
+
+##监听器
+
+

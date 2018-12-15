@@ -50,20 +50,32 @@
     function connect() {
         var socket = new SockJS('/endpointWisely'); //1连接SockJS的endpoint是“endpointWisely”，与后台代码中注册的endpoint要一样。
         stompClient = Stomp.over(socket);//2创建STOMP协议的webSocket客户端。
-        stompClient.connect({}, function(frame) {//3连接webSocket的服务端。
+        stompClient.connect({"aa":"11"}, function(frame) {//3连接webSocket的服务端。
             setConnected(true);
             console.log('开始进行连接Connected: ' + frame);
 
-            //4通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
+            //4.1通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
             stompClient.subscribe('/topic/getResponse', function(respnose){
                 showResponse(JSON.parse(respnose.body).responseMessage);
             });
 
-            //4通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/msg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
+            //4.2通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/msg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
             stompClient.subscribe('/user/' + userIdSelf + '/msg', function(respnose){
                 console.log(respnose);
                 showResponse1(JSON.parse(respnose.body).responseMessage);
             });
+
+            //4.3订阅服务器的目标是'/topic/getServerInfoResponse'发送过来的信息()
+            stompClient.subscribe('/topic/getServerInfoResponse', function(respnose){
+                showResponse("服務器可用处理器:"+JSON.parse(respnose.body).processors + "可用内存大小:" + JSON.parse(respnose.body).freeMemory + "最大内存大小:"+JSON.parse(respnose.body).maxMemory);
+            });
+
+            //4.4通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/privateMsg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
+            stompClient.subscribe('/user/' + userIdSelf + '/privateMsg', function(respnose){
+                console.log(respnose);
+                showResponse1("服務器可用处理器:"+JSON.parse(respnose.body).processors + "可用内存大小:" + JSON.parse(respnose.body).freeMemory + "最大内存大小:"+JSON.parse(respnose.body).maxMemory);
+            });
+
         });
     }
 

@@ -70,4 +70,11 @@ public class WsController {
      * 如果不用注解方式那么就调用SimpMessagingTemplate.convertAndSend(D destination, Object payload)来完成.
      *
      */
+
+
+
+
+
+
+
 }
