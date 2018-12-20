@@ -15,7 +15,7 @@
 
         <!--数据库地址-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.6.102:3306/wolf?characterEncoding=UTF-8"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/wolf?characterEncoding=UTF-8"
                         userId="root"
                         password="root">
         </jdbcConnection>
