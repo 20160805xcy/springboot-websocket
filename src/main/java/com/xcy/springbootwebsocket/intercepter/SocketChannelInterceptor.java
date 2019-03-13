@@ -6,6 +6,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
+import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -27,6 +28,12 @@ public class SocketChannelInterceptor extends ChannelInterceptorAdapter {
      */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
+        //Message<String> stringMessage = MessageBuilder.withPayload(((String) message.getPayload()).toUpperCase())
+        //        .copyHeaders(message.getHeaders())
+        //        .build();
+        //System.out.println("preSend方法,消息:"+ stringMessage);
+
         System.out.println("SocketChannelInterceptor --> preSend");
         return super.preSend(message, channel);
     }
