@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ServerInfoService {
     /**
-     * 获取服务器的内存性能信息(给所有用户)
+     * 获取服务器的内存性能信息(给所有已订阅消息的用户)
      * @return
      */
     ServerInfo getServerInfoToAll();

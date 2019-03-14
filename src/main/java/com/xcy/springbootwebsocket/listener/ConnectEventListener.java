@@ -5,10 +5,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @Author xcy
  * @Description 客户端建立连接事件监听器
@@ -17,18 +13,18 @@ import java.util.Map;
  */
 @Component
 public class ConnectEventListener implements ApplicationListener<SessionConnectEvent> {
+
+
     @Override
     public void onApplicationEvent(SessionConnectEvent sessionConnectEvent) {
+        //通过StompHeaderAccessor对象获取前端传入的headers信息
+        StompHeaderAccessor sha = StompHeaderAccessor.wrap(sessionConnectEvent.getMessage());
+        String userId = sha.getNativeHeader("userId").get(0);
+        String userName = sha.getNativeHeader("userName").get(0);
+        String sessionId = sha.getSessionId();
+        System.out.println("刚创建链接时从headers监听到的用户名: "+userName + "; 用户ID: " + userId + "; sessionId: " + sessionId);
+
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(sessionConnectEvent.getMessage());
-
-
-        //Map<String, List<String>> nativeHeaders = headerAccessor.getNativeHeaders();
-        //for (String key : nativeHeaders.keySet()){
-        //    if("aa".equals(key)){
-        //        System.out.println("value=" + nativeHeaders.get("aa"));
-        //    }
-        //}
-        System.out.println("userId"+ headerAccessor.getMessage());
         System.out.println("[ConnectEventListener 监听器事件 类型] = "+headerAccessor.getCommand().getMessageType());
     }
 }

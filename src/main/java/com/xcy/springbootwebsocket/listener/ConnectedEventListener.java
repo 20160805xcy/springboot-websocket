@@ -14,8 +14,9 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 //@Component
 public class ConnectedEventListener implements ApplicationListener<SessionConnectedEvent> {
     @Override
+    //TODO 看不懂
     public void onApplicationEvent(SessionConnectedEvent sessionConnectEvent) {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(sessionConnectEvent.getMessage());
-        System.out.println("[ConnectEventListener 监听器事件 类型] = "+headerAccessor.getCommand().getMessageType());
+        System.out.println("[ConnectedEventListener 监听器事件 类型] = "+headerAccessor.getCommand().getMessageType());
     }
 }

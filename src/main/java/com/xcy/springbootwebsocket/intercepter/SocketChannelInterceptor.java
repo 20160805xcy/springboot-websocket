@@ -4,6 +4,8 @@ import com.xcy.springbootwebsocket.controller.UserController;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.converter.SimpleMessageConverter;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.MessageBuilder;
@@ -21,18 +23,13 @@ import java.util.Map;
 public class SocketChannelInterceptor extends ChannelInterceptorAdapter {
 
     /**
-     * 在消息被实际发送到频道之前调用
+     * 在消息被实际发送到频道之前调用.如果需要,这允许修改消息.如果此方法返回null则不会发生实际的发送调用.
      * @param message
      * @param channel
      * @return
      */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
-        //Message<String> stringMessage = MessageBuilder.withPayload(((String) message.getPayload()).toUpperCase())
-        //        .copyHeaders(message.getHeaders())
-        //        .build();
-        //System.out.println("preSend方法,消息:"+ stringMessage);
 
         System.out.println("SocketChannelInterceptor --> preSend");
         return super.preSend(message, channel);
@@ -52,7 +49,7 @@ public class SocketChannelInterceptor extends ChannelInterceptorAdapter {
         //消息头访问器我的
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
         if(null == headerAccessor.getCommand()) return; //避免非stomp消息类型，例如心跳检测
-
+        //TODO 这个位置还是有很多不明白啊,这是干哈啊,直接return
 
         String sessionId = headerAccessor.getSessionAttributes().get("sessionId").toString();
         System.out.println("SocketChannelInterceptor --> postSend sessionId = " + sessionId);

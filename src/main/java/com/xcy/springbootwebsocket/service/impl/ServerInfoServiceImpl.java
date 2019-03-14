@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author xcy
- * @Description
+ * @Description 获取服务器内存使用状态信息
  * @Date 2018/12/15 12:46
  * @Version 1.0
  */
@@ -26,7 +26,7 @@ public class ServerInfoServiceImpl implements ServerInfoService {
         long freeMemory = Runtime.getRuntime().freeMemory();
         long maxMemory = Runtime.getRuntime().maxMemory();
         ServerInfo info = new ServerInfo(processors,freeMemory,maxMemory);
-        //发送给所有在线用户(如:股票信息推送给所有在线用户)
+        //发送给所有在线用户(如:股票信息推送给所有已订阅消息的用户)
         template.convertAndSend("/topic/getServerInfoResponse", info);
         return info;
     }

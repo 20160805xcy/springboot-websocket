@@ -39,8 +39,10 @@
     var stompClient = null;
     //此值由服务端传递给前端,实现方式没有要求
     var userIdSelf = $("#userId").val();
+    var userName = $("#userName").val();
 
     var headers={
+        userName:userName,
         userId:userIdSelf
     };
 
@@ -58,7 +60,9 @@
             setConnected(true);
             console.log('开始进行连接Connected: ' + frame);
 
-            stompClient.send()
+            stompClient.send();
+
+            //可对不同用户进行不同的订阅配置,如 jack不能订阅服务器内存状态的服务,其他人都可以.后端能够监听到用户订阅事件
 
             //4.1通过stompClient.subscribe（）订阅服务器的目标是'/topic/getResponse'发送过来的地址，与@SendTo中的地址对应。
             stompClient.subscribe('/topic/getResponse', function(respnose){
@@ -71,17 +75,18 @@
                 showResponse1(JSON.parse(respnose.body).responseMessage);
             });
 
-            //4.3订阅服务器的目标是'/topic/getServerInfoResponse'发送过来的信息()
-            stompClient.subscribe('/topic/getServerInfoResponse', function(respnose){
-                showResponse("服務器可用处理器:"+JSON.parse(respnose.body).processors + "可用内存大小:" + JSON.parse(respnose.body).freeMemory + "最大内存大小:"+JSON.parse(respnose.body).maxMemory);
-            });
+            if(userName != "jack"){
+                //4.3订阅服务器的目标是'/topic/getServerInfoResponse'发送过来的信息()
+                stompClient.subscribe('/topic/getServerInfoResponse', function(respnose){
+                    showResponse("服務器可用处理器:"+JSON.parse(respnose.body).processors + "可用内存大小:" + JSON.parse(respnose.body).freeMemory + "最大内存大小:"+JSON.parse(respnose.body).maxMemory);
+                });
 
-            //4.4通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/privateMsg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
-            stompClient.subscribe('/user/' + userIdSelf + '/privateMsg', function(respnose){
-                console.log(respnose);
-                showResponse1("服務器可用处理器:"+JSON.parse(respnose.body).processors + "可用内存大小:" + JSON.parse(respnose.body).freeMemory + "最大内存大小:"+JSON.parse(respnose.body).maxMemory);
-            });
-
+                //4.4通过stompClient.subscribe（）订阅服务器的目标是'/user/' + userId + '/privateMsg'接收一对一的推送消息,其中userId由服务端传递过来,用于表示唯一的用户,通过此值将消息精确推送给一个用户
+                stompClient.subscribe('/user/' + userIdSelf + '/privateMsg', function(respnose){
+                    console.log(respnose);
+                    showResponse1("服務器可用处理器:"+JSON.parse(respnose.body).processors + "可用内存大小:" + JSON.parse(respnose.body).freeMemory + "最大内存大小:"+JSON.parse(respnose.body).maxMemory);
+                });
+            }
         });
     }
 

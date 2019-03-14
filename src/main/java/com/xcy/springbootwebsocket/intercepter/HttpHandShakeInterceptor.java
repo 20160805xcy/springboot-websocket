@@ -27,7 +27,7 @@ public class HttpHandShakeInterceptor implements HandshakeInterceptor{
             Cookie[] cookies = httpRequest.getServletRequest().getCookies();
             //此处可以获取到很多request对象的属性值
             HttpSession session = httpRequest.getServletRequest().getSession();
-            System.out.println("当前登录用户为: " + session.getAttribute("userName") + "用户id为: " + session.getAttribute("id"));
+            System.out.println("http握手拦截从session中获取到当前登录用户为: " + session.getAttribute("userName") + "; 用户id为: " + session.getAttribute("id"));
 
             String sessionId = session.getId();
             System.out.println("[握手拦截器] beforeHandshake sessionId = " + sessionId);
